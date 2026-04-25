@@ -1,0 +1,205 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&family=Outfit:wght@300;400;600;700&display=swap');
+@import "tailwindcss";
+
+@layer utilities {
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+}
+
+:root {
+  --bg-primary: #000000;
+  --bg-secondary: #0a0a0c;
+  --bg-panel: rgba(18, 18, 18, 0.9);
+  --text-primary: #ffffff;
+  --text-secondary: #a1a1aa;
+  --border-primary: #1a1a1a;
+  --accent-primary: #00f2ff;
+  --accent-secondary: #ff003c;
+  
+  --status-success: #10b981;
+  --status-warning: #f59e0b;
+  --status-danger: #ef4444;
+}
+
+[data-theme="white"] {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #f1f5f9;
+  --bg-panel: rgba(255, 255, 255, 0.95);
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --border-primary: #cbd5e1;
+  --accent-primary: #2563eb;
+  --accent-secondary: #dc2626;
+
+  --status-success: #16a34a;
+  --status-warning: #d97706;
+  --status-danger: #dc2626;
+}
+
+[data-theme="purple"] {
+  --bg-primary: #0f0720;
+  --bg-secondary: #1a0b3b;
+  --bg-panel: rgba(26, 11, 59, 0.9);
+  --text-primary: #f5f3ff;
+  --text-secondary: #a78bfa;
+  --border-primary: #4c1d95;
+  --accent-primary: #d8b4fe;
+  --accent-secondary: #f472b6;
+
+  --status-success: #34d399;
+  --status-warning: #fbbf24;
+  --status-danger: #f87171;
+}
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-serif: "Cormorant Garamond", serif;
+  --font-display: "Montserrat", sans-serif;
+  --font-outfit: "Outfit", sans-serif;
+
+  --color-stealth-black: #050505;
+  --color-stealth-gray: #121212;
+  --color-stealth-border: #1a1a1a;
+  --color-cyber-cyan: #00f2ff;
+  --color-cyber-red: #ff003c;
+  --color-cyber-amber: #ffb800;
+
+  /* Theme Variables mapped to Tailwind colors */
+  --color-bg-primary: var(--bg-primary);
+  --color-bg-secondary: var(--bg-secondary);
+  --color-bg-panel: var(--bg-panel);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-border-primary: var(--border-primary);
+  --color-accent-primary: var(--accent-primary);
+  --color-accent-secondary: var(--accent-secondary);
+  
+  --color-status-success: var(--status-success);
+  --color-status-warning: var(--status-warning);
+  --color-status-danger: var(--status-danger);
+}
+
+@layer base {
+  body {
+    @apply antialiased transition-colors duration-300 overflow-x-hidden;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+  }
+
+  /* Noise Overlay */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/feTurbulence%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 9999;
+  }
+}
+
+/* Role-Specific Base Styles */
+.role-guest {
+  font-family: var(--font-sans);
+}
+
+.role-admin {
+  font-family: var(--font-mono);
+}
+
+.role-staff {
+  font-family: var(--font-sans);
+}
+
+.cyber-panel {
+  @apply border relative overflow-hidden transition-all duration-500;
+  background-color: var(--bg-panel);
+  border-color: var(--border-primary);
+  backdrop-filter: blur(12px);
+}
+
+.role-guest .cyber-panel {
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+.role-admin .cyber-panel {
+  border-radius: 0;
+  border-left: 2px solid var(--accent-primary);
+}
+
+.role-staff .cyber-panel {
+  border-radius: 8px;
+}
+
+.cyber-corner {
+  @apply absolute w-2 h-2;
+  border-color: var(--accent-primary);
+  opacity: 0.4;
+}
+
+.corner-tl { @apply top-0 left-0 border-t border-l; }
+.corner-tr { @apply top-0 right-0 border-t border-r; }
+.corner-bl { @apply bottom-0 left-0 border-b border-l; }
+.corner-br { @apply bottom-0 right-0 border-b border-r; }
+
+.scanline-v2 {
+  @apply absolute inset-0 pointer-events-none overflow-hidden opacity-10;
+  background: linear-gradient(to bottom, transparent 50%, var(--accent-primary) 50%);
+  background-size: 100% 4px;
+}
+
+.tactical-grid {
+  background-image: 
+    linear-gradient(var(--accent-primary) 1px, transparent 1px),
+    linear-gradient(90deg, var(--accent-primary) 1px, transparent 1px);
+  background-size: 20px 20px;
+  opacity: 0.03;
+}
+
+/* Tactical Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+  border-left: 1px solid var(--border-primary);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--accent-primary);
+  border-radius: 0;
+  box-shadow: inset 0 0 10px var(--accent-primary);
+  opacity: 0.5;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-primary);
+  opacity: 1;
+}
+
+/* Hardware Accents */
+.hardware-tag {
+  @apply px-2 py-0.5 border text-[8px] font-mono uppercase tracking-widest transition-colors;
+  background-color: var(--bg-secondary);
+  border-color: var(--border-primary);
+  color: var(--text-secondary);
+}
+
+.role-admin .hardware-tag {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}

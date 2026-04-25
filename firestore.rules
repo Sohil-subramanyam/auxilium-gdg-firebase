@@ -1,0 +1,23 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow anyone to read system stats
+    // Allow anyone to update the system stats (for incrementing visitorCount)
+    match /stats/global {
+      allow read: if true;
+      allow create: if true;
+      allow update: if true;
+    }
+
+    // Allow creating visit logs
+    match /visits/{visitId} {
+      allow create: if true;
+      allow read: if false; // Privacy: don't let people read visit logs
+    }
+    
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

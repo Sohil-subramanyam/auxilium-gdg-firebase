@@ -1,0 +1,55 @@
+{
+  "entities": {
+    "Visit": {
+      "title": "Visit",
+      "description": "Information about a user visit to the application.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique ID for the visit"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the visit occurred"
+        },
+        "userAgent": {
+          "type": "string",
+          "description": "Browser user agent"
+        },
+        "path": {
+          "type": "string",
+          "description": "The page visited"
+        }
+      },
+      "required": ["timestamp"]
+    },
+    "Stats": {
+      "title": "Stats",
+      "description": "Global statistics for the application.",
+      "type": "object",
+      "properties": {
+        "visitCount": {
+          "type": "number",
+          "description": "Total number of visits"
+        },
+        "lastUpdated": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the stats were last updated"
+        }
+      }
+    }
+  },
+  "firestore": {
+    "visits": {
+      "schema": "Visit",
+      "description": "Collection of individual visit logs"
+    },
+    "stats/global": {
+      "schema": "Stats",
+      "description": "Single document holding global aggregates"
+    }
+  }
+}
